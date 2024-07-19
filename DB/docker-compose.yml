@@ -17,3 +17,4 @@ volumes:
   pf-data:
 networks:
   pf-net:
+    external: true

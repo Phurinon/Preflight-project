@@ -6,7 +6,7 @@ services:
     ports:
       - ${PORT}:3000
     networks:
-      - preflight_pf-net
+      - pf-net
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PORT=${POSTGRES_PORT}
@@ -14,5 +14,5 @@ services:
       - POSTGRES_APP_USER=${POSTGRES_APP_USER}
       - POSTGRES_APP_PASSWORD=${POSTGRES_APP_PASSWORD}
 networks:
-  preflight_pf-net: # Check by using `docker network ls` command
+  pf-net: # Check by using `docker network ls` command
     external: true
