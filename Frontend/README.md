@@ -28,3 +28,19 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+#Setup
+  -npm i
+
+#Dev operations
+  -npm run dev
+  -npm run build
+  -npm run preview
+
+#Containerization and test
+  -Make .env.test from .env.test.example
+  -docker compose --env-file ./.env.test up -d --force-recreate --build
+
+#Push to dockerhub
+  -docker tag preflight-frontend [DOCKERHUB_ACCOUNT]/preflight-frontend:latest
+  -docker push [DOCKERHUB_ACCOUNT]/preflight-frontend:latest
