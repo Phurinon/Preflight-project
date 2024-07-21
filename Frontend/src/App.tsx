@@ -184,6 +184,14 @@ function App() {
             </span>
           ))}
         </div>
+        <div style={{
+                backgroundColor: 'gray',
+                height: '0.1rem',
+                borderRadius: '0.375rem',
+                marginBottom: '1rem',
+                width: '100%', 
+              }}>
+        </div>
         <div data-cy="todo-item-wrapper">
           {getFilteredTodos().length === 0 ? (
             <div style={{ textAlign: "center", padding: "1rem", fontStyle: "italic", color: "#6b7280" }}>
