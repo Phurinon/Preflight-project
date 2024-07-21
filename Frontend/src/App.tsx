@@ -179,7 +179,6 @@ function App() {
               }}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = filter === label ? "#2563eb" : "#e5e7eb")}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = filter === label ? "#3b82f6" : "#f3f4f6")}
-              data-cy={`filter-${label.toLowerCase().replace(/ /g, '-')}`}
             >
               {label}
             </span>
@@ -216,9 +215,21 @@ function App() {
                   />
                   <div>📅{date}</div>
                   <div>⏰{time}</div>
-                  <div data-cy="todo-item-text">📰{text}</div>
                   <div
-                    style={{ cursor: "pointer", marginLeft: "0.5rem" }}
+                    data-cy="todo-item-text"
+                    style={{
+                      flex: 1,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      marginRight: "0.5rem",
+                      maxWidth: "calc(100% - 4rem)"
+                    }}
+                    >
+                    📰{text}
+                  </div>
+                  <div
+                    style={{ cursor: "pointer", marginLeft: "0.5rem",flexShrink: 0, }}
                     onClick={() => {
                       setMode("EDIT");
                       setCurTodoId(item.id);
@@ -230,7 +241,11 @@ function App() {
                   </div>
                   {mode === "ADD" && (
                     <div
-                      style={{ cursor: "pointer", marginLeft: "0.5rem" }}
+                      style={{
+                        cursor: "pointer",
+                        marginLeft: "0.5rem",
+                        flexShrink: 0,
+                      }}
                       onClick={() => handleDelete(item.id)}
                       data-cy="todo-item-delete"
                     >
