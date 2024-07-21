@@ -71,6 +71,31 @@ app.patch("/todo", async (req, res, next) => {
   }
 });
 
+app.patch("/todo/completed", async (req, res, next) => {
+  try {
+    console.log("Request body:", req.body); // Log request body
+    const { id, completed } = req.body;
+    if (!id || completed === undefined) throw new Error("Missing id or completed status");
+
+    const results = await dbClient.query.todoTable.findMany({
+      where: eq(todoTable.id, id),
+    });
+    if (results.length === 0) throw new Error("Invalid id");
+
+    const result = await dbClient
+      .update(todoTable)
+      .set({ isDone: completed })
+      .where(eq(todoTable.id, id))
+      .returning({ id: todoTable.id, isDone: todoTable.isDone });
+    console.log("Update result:", result); // Log result
+    res.json({ msg: `Update completed status successfully`, data: result });
+  } catch (err) {
+    console.error("Error:", err); // Log error details
+    next(err);
+  }
+});
+
+
 // Delete
 app.delete("/todo", async (req, res, next) => {
   try {
@@ -96,6 +121,21 @@ app.delete("/todo", async (req, res, next) => {
 app.post("/todo/all", async (req, res, next) => {
   try {
     await dbClient.delete(todoTable);
+    res.json({
+      msg: `Delete all rows successfully`,
+      data: {},
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+
+// Delete all todos
+app.delete("/todo/all", async (req, res, next) => {
+  try {
+    await dbClient.delete(todoTable); // Deletes all rows from the table
     res.json({
       msg: `Delete all rows successfully`,
       data: {},
