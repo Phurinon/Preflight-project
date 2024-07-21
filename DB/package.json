@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "-Make .env from .env.example\r     -docker compose up -d",
   "dependencies": {
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.32.0",
