@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { type TodoItem } from "./types";
 import dayjs from "dayjs";
-// import { SquarePen } from 'lucide-react';
 
 function App() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -11,7 +10,6 @@ function App() {
   const [curTodoId, setCurTodoId] = useState("");
   const [filter, setFilter] = useState<"ALL" | "PENDING" | "COMPLETED">("ALL");
 
-  // Fetch all todos from the server
   async function fetchData() {
     try {
       const res = await axios.get<TodoItem[]>("api/todo");
@@ -21,17 +19,14 @@ function App() {
     }
   }
 
-  // Fetch todos on component mount
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Handle text input change
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInputText(e.target.value);
   }
 
-  // Submit new or edited todo
   function handleSubmit() {
     if (!inputText) return;
 
@@ -49,7 +44,6 @@ function App() {
       .catch((err) => alert("Error submitting todo: " + err.message));
   }
 
-  // Handle todo item deletion
   function handleDelete(id: string) {
     axios
       .delete("/api/todo", { data: { id } })
@@ -61,19 +55,16 @@ function App() {
       .catch((err) => alert("Error deleting todo: " + err.message));
   }
 
-  // Cancel editing mode
   function handleCancel() {
     setMode("ADD");
     setInputText("");
     setCurTodoId("");
   }
 
-  // Filter todos based on the selected filter
   function handleFilter(filter: "ALL" | "PENDING" | "COMPLETED") {
     setFilter(filter);
   }
 
-  // Clear all todos
   function handleClearAll() {
       axios
         .delete("/api/todo/all")
@@ -83,7 +74,6 @@ function App() {
         .catch((err) => alert("Error clearing todos: " + err.message));
   }
 
-  // Toggle completion status of a todo item
   function handleCheckboxChange(id: string, isDone: boolean) {
     axios
       .patch("/api/todo/completed", { id, completed: !isDone })
@@ -94,7 +84,6 @@ function App() {
       });
   }
 
-  // Filter todos based on the current filter
   function getFilteredTodos() {
     switch (filter) {
       case "PENDING":
@@ -106,7 +95,6 @@ function App() {
     }
   }
 
-  // Handle "Enter" key press in input
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       handleSubmit();
@@ -114,7 +102,7 @@ function App() {
   }
 
   return (
-    <div style={{ margin: "auto", padding: "16px", maxWidth: "600px", width: "500px", height: "100%", backgroundColor: "white", marginTop: "100px", borderRadius: "20px" }}>
+    <div style={{ margin: "auto", padding: "16px", maxWidth: "700px", width: "650px", height: "100%", backgroundColor: "white", marginTop: "100px", borderRadius: "20px" }}>
       <header>
         <h1 style={{ fontWeight: "bold", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", color: "black" }}>Todo App</h1>
       </header>
@@ -149,7 +137,7 @@ function App() {
                 border: "none",
                 cursor: "pointer",
                 height: "60px",
-                marginBottom: "1rem"
+                marginBottom: "1rem",
               }}
               onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#4b5563")}
               onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#6b7280")}
@@ -159,30 +147,94 @@ function App() {
           )}
         </div>
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
-          {["ALL", "PENDING", "COMPLETED", "CLEAR ALL"].map((label) => (
-            <span
-              key={label}
-              onClick={() => label === "CLEAR ALL" ? handleClearAll() : handleFilter(label as "ALL" | "PENDING" | "COMPLETED")}
-              style={{
-                whiteSpace: "nowrap",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "6rem",
-                height: "2.5rem",
-                margin: "0 0.5rem",
-                borderRadius: "0.25rem",
-                cursor: "pointer",
-                backgroundColor: filter === label ? "#3b82f6" : "#f3f4f6",
-                color: filter === label ? "white" : "#374151",
-                transition: "background-color 0.3s"
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = filter === label ? "#2563eb" : "#e5e7eb")}
-              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = filter === label ? "#3b82f6" : "#f3f4f6")}
-            >
-              {label}
-            </span>
-          ))}
+          <span
+            data-cy="filter-all"
+            onClick={() => handleFilter("ALL")}
+            style={{
+              whiteSpace: "nowrap",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "6rem",
+              height: "2.5rem",
+              margin: "0 0.5rem",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              backgroundColor: filter === "ALL" ? "#3b82f6" : "#f3f4f6",
+              color: filter === "ALL" ? "white" : "#374151",
+              transition: "background-color 0.3s"
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = filter === "ALL" ? "#2563eb" : "#e5e7eb")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = filter === "ALL" ? "#3b82f6" : "#f3f4f6")}
+          >
+            ALL
+          </span>
+          <span
+            data-cy="filter-pending"
+            onClick={() => handleFilter("PENDING")}
+            style={{
+              whiteSpace: "nowrap",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "6rem",
+              height: "2.5rem",
+              margin: "0 0.5rem",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              backgroundColor: filter === "PENDING" ? "#3b82f6" : "#f3f4f6",
+              color: filter === "PENDING" ? "white" : "#374151",
+              transition: "background-color 0.3s"
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = filter === "PENDING" ? "#2563eb" : "#e5e7eb")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = filter === "PENDING" ? "#3b82f6" : "#f3f4f6")}
+          >
+            PENDING
+          </span>
+          <span
+            data-cy="filter-completed"
+            onClick={() => handleFilter("COMPLETED")}
+            style={{
+              whiteSpace: "nowrap",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "6rem",
+              height: "2.5rem",
+              margin: "0 0.5rem",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              backgroundColor: filter === "COMPLETED" ? "#3b82f6" : "#f3f4f6",
+              color: filter === "COMPLETED" ? "white" : "#374151",
+              transition: "background-color 0.3s"
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = filter === "COMPLETED" ? "#2563eb" : "#e5e7eb")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = filter === "COMPLETED" ? "#3b82f6" : "#f3f4f6")}
+          >
+            COMPLETED
+          </span>
+          <span
+            data-cy="filter-clear-all"
+            onClick={() => handleClearAll()}
+            style={{
+              whiteSpace: "nowrap",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "6rem",
+              height: "2.5rem",
+              margin: "0 0.5rem",
+              borderRadius: "0.25rem",
+              cursor: "pointer",
+              backgroundColor: "#f3f4f6",
+              color: "#374151",
+              transition: "background-color 0.3s"
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e5e7eb")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#f3f4f6")}
+          >
+            CLEAR ALL
+          </span>
         </div>
         <div style={{
                 backgroundColor: 'gray',
@@ -218,7 +270,11 @@ function App() {
                     type="checkbox"
                     checked={item.isDone}
                     onChange={() => handleCheckboxChange(item.id, item.isDone)}
-                    style={{ marginRight: "0.5rem" }}
+                    style={{ 
+                      marginRight: "0.5rem",
+                      backgroundColor: "black",
+                      border: "1px solid white", 
+                    }}
                     data-cy={`todo-item-checkbox-${item.id}`}
                   />
                   <div>📅{date}</div>
