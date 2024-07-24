@@ -7,8 +7,8 @@ Get started
     -docker compose up -d --force-recreate
     
 Setup database
-    -docker exec -it pf-db bash
-        -psql -U postgres -d mydb
+    -docker exec -it pf-db-g7 bash
+    -psql -U postgres -d mydb
     Don't forget to change the password.
     REVOKE CONNECT ON DATABASE mydb FROM public;
     REVOKE ALL ON SCHEMA public FROM PUBLIC;
@@ -18,6 +18,6 @@ Setup database
     GRANT ALL ON SCHEMA public TO appuser;
     GRANT ALL ON SCHEMA drizzle TO appuser;
 
-    -docker exec -it pf-backend sh
+    -docker exec -it pf-backend-g7 sh
     -npm run db:generate
     -npm run db:migrate

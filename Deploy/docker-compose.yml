@@ -1,8 +1,8 @@
-name: preflight
+name: preflight-g7-db
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: pf-db
+    container_name: pf-db-g7
     ports:
       - ${POSTGRES_PORT}:5432
     volumes:
@@ -16,8 +16,8 @@ services:
   backend:
     depends_on:
       - postgres
-    image: nnnpooh/preflight-backend:latest
-    container_name: pf-backend
+    image: werasak/preflight-backend-g7:latest
+    container_name: pf-backend-g7
     ports:
       - ${PORT}:3000
     networks:
@@ -31,10 +31,10 @@ services:
   frontend:
     depends_on:
       - backend
-    image: nnnpooh/preflight-frontend:latest
-    container_name: pf-frontend
+    image: werasak/preflight-frontend-g7:latest
+    container_name: pf-frontend-g7
     ports:
-      - ${NGINX_PORT}:5173
+      - ${NGINX_PORT}:5177
     networks:
       - pf-net
     environment:
