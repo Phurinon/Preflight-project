@@ -4,7 +4,7 @@ services:
     container_name: pf-frontend-g7
     build: .
     ports:
-      - ${NGINX_PORT}:5173
+      - ${NGINX_PORT}:5174
     networks:
       - pf-net
     environment:
